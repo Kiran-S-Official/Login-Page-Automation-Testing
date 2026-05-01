@@ -1,22 +1,6 @@
 # Login-Page-Automation-Testing
 Automated login functionality using Selenium
 
-Project Structure:
-LoginAutomationProject/
-│── src/
-│   ├── main/
-│   │   └── pages/
-│   │       └── LoginPage.java
-│   ├── test/
-│   │   └── tests/
-│   │       └── LoginTest.java
-│   ├── utils/
-│   │       └── BaseTest.java
-│
-│── pom.xml
-│── testng.xml
-│── README.md
-
 package utils;
 
 import org.openqa.selenium.WebDriver;
