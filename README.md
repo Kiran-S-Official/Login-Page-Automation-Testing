@@ -118,8 +118,11 @@ public class OrangeHRM {
 	https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>LoginPageAutomationTestProject</groupId>
+  
   <artifactId>LoginPageAutomationTestProject</artifactId>
+  
   <version>0.0.1-SNAPSHOT</version>
   
   <dependencies>
