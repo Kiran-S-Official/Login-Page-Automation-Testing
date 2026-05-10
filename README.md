@@ -110,45 +110,49 @@ public class OrangeHRM {
 	}
 }
 
+# Login Page Test Automatin Project Dependencies
 
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Login Test Suite">
-    <test name="Login Tests">
-        <classes>
-            <class name="tests.LoginTest"/>
-        </classes>
-    </test>
-</suite>
+<project xmlns="https://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 
+	https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>LoginPageAutomationTestProject</groupId>
+  <artifactId>LoginPageAutomationTestProject</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.43.0</version>
+    <scope>compile</scope>
+</dependency>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-    <modelVersion>4.0.0</modelVersion>
+       <dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.12.0</version>
+    <scope>test</scope>
+</dependency>
 
-    <groupId>LoginAutomation</groupId>
-    <artifactId>LoginAutomation</artifactId>
-    <version>1.0</version>
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-api</artifactId>
+    <version>6.0.3</version>
+    <scope>test</scope>
+</dependency>
 
-    <dependencies>
-        <!-- Selenium -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.18.1</version>
-        </dependency>
-
-        <!-- TestNG -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.8.0</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
+	
 </project>
 
 
 
 
-# Login Automation Testing Project
+# Login Page Test Automatin Project
 
 Overview
 This project automates login functionality using Selenium WebDriver and TestNG.
@@ -160,9 +164,9 @@ Tech Stack
 - Maven
 
 Test Scenarios
-- Valid Login
-- Invalid Login
-- Empty Credentials
+- Login With Empty Fields
+- Login With InValid Credentials
+- Login With Valid Credentials
 
 Concepts Used
 - Page Object Model (POM)
