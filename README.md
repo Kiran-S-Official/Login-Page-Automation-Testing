@@ -1,112 +1,115 @@
 # Login-Page-Automation-Testing
 Automated login functionality using Selenium
 
-package utils;
+package Pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-
-public class BaseTest {
-
-    public WebDriver driver;
-
-    @BeforeMethod
-    public void setup() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://the-internet.herokuapp.com/login");
-    }
-
-    @AfterMethod
-    public void teardown() {
-        driver.quit();
-    }
-}
-
-package pages;
+import java.time.Duration;
 
 import org.openqa.selenium.By;
+
 import org.openqa.selenium.WebDriver;
 
-public class LoginPage {
-
-    WebDriver driver;
-
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    // Locators
-    By username = By.id("username");
-    By password = By.id("password");
-    By loginBtn = By.cssSelector("button[type='submit']");
-    By message = By.id("flash");
-
-    // Actions
-    public void enterUsername(String user) {
-        driver.findElement(username).sendKeys(user);
-    }
-
-    public void enterPassword(String pass) {
-        driver.findElement(password).sendKeys(pass);
-    }
-
-    public void clickLogin() {
-        driver.findElement(loginBtn).click();
-    }
-
-    public String getMessage() {
-        return driver.findElement(message).getText();
-    }
-}
-
-package tests;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import org.testng.Assert;
-import org.testng.annotations.Test;
-import pages.LoginPage;
-import utils.BaseTest;
 
-public class LoginTest extends BaseTest {
+import org.testng.annotations.*;
 
-    @Test
-    public void validLoginTest() {
-        LoginPage login = new LoginPage(driver);
+public class OrangeHRM {
 
-        login.enterUsername("tomsmith");
-        login.enterPassword("SuperSecretPassword!");
-        login.clickLogin();
+	public String baseUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
+	public WebDriver driver;
 
-        String msg = login.getMessage();
-        Assert.assertTrue(msg.contains("You logged into a secure area!"));
-    }
+	@BeforeTest
+	public void setup() {
+		System.out.println("Before Test execution");
 
-    @Test
-    public void invalidLoginTest() {
-        LoginPage login = new LoginPage(driver);
+		driver = new ChromeDriver();
 
-        login.enterUsername("wrongUser");
-        login.enterPassword("wrongPass");
-        login.clickLogin();
+		//maximize window
+		driver.manage().window().maximize();
 
-        String msg = login.getMessage();
-        Assert.assertTrue(msg.contains("Your username is invalid!"));
-    }
+		//test link opened
+		driver.get(baseUrl);
 
-    @Test
-    public void emptyLoginTest() {
-        LoginPage login = new LoginPage(driver);
+		//time to wait 60s (we can also reduce it)
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 
-        login.enterUsername("");
-        login.enterPassword("");
-        login.clickLogin();
+	}
 
-        String msg = login.getMessage();
-        Assert.assertTrue(msg.contains("Your username is invalid!"));
-    }
+	@Test (priority = 3)
+	public void loginTestWithValidCredantials()
+	{
+		// find username
+		driver.findElement(By.xpath("//input[@placeholder='Username']")).sendKeys("Admin");
+
+		// find password
+		driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys("admin123");
+
+		// login button click
+		driver.findElement(By.xpath("//button[@type='submit']")).submit();
+
+		String pageTitle = driver.getTitle();
+
+		/*	if(pageTitle.equals("OrangeHMR")) {
+			System.out.println("Login successful!");
+		} else {
+			System.out.println("Login failed!");
+		}*/
+
+		Assert.assertEquals("OrangeHRM", pageTitle);
+
+	}
+
+	@Test (priority = 2)
+	public void loginTestWithInvalidCredentials() throws Exception
+	{
+		driver.findElement(By.xpath("//input[@placeholder='Username']")).sendKeys("Admin");
+		driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys("admin123456");
+		driver.findElement(By.xpath("//button[@type='submit']")).submit();
+
+		String expected_message = "Invalid credentials";
+		String actual_message = driver.findElement(By.xpath("//p[@class='oxd-text oxd-text--p oxd-alert-content-text']")).getText();
+		
+		//Assert.assertTrue(actual_message.contains(expected_message));
+		
+		Assert.assertEquals(actual_message, expected_message);
+		Thread.sleep(1500);	
+	}
+	
+	@Test (priority = 1)
+	public void loginWithEmptyFields () throws Exception
+	{
+		driver.findElement(By.xpath("//input[@placeholder='Username']")).sendKeys(" ");
+		driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys(" ");
+		driver.findElement(By.xpath("//button[@type='submit']")).submit();
+		
+		String empty_field_actual_message = "Required";
+		String empty_field_message = driver.findElement(By.xpath("//span[@class='oxd-text oxd-text--span oxd-input-field-error-message oxd-input-group__message']")).getText();
+		
+		Assert.assertEquals(empty_field_message, empty_field_actual_message);
+		
+		Thread.sleep(1500);
+	}
+
+	public void logOut ()
+	{
+		driver.findElement(By.xpath("//p[@class='oxd-userdropdown-name']")).click();
+		driver.findElement(By.xpath("//a[normalize-space()='Logout']")).click();
+	}
+
+	@AfterTest
+	public void tearDown() throws Exception
+	{
+		Thread.sleep(10000); //wait 10s before quite
+
+		logOut();
+
+		driver.close();
+		driver.quit();
+	}
 }
+
 
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Login Test Suite">
