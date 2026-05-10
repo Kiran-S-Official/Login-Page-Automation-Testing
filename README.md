@@ -1,7 +1,7 @@
 # Login-Page-Automation-Testing
 Automated login functionality using Selenium
 
-package Pages;
+package LoginPageAutomation;
 
 import java.time.Duration;
 
