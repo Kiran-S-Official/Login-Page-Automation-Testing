@@ -11,6 +11,8 @@ import org.openqa.selenium.WebDriver;
 
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 
 import org.testng.annotations.*;
@@ -74,6 +76,7 @@ public class OrangeHRM {
 		//Assert.assertTrue(actual_message.contains(expected_message));
 		
 		Assert.assertEquals(actual_message, expected_message);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 		Thread.sleep(1500);	
 	}
 	
@@ -101,6 +104,7 @@ public class OrangeHRM {
 	@AfterTest
 	public void tearDown() throws Exception
 	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		Thread.sleep(10000); //wait 10s before quite
 
 		logOut();
@@ -108,7 +112,10 @@ public class OrangeHRM {
 		driver.close();
 		driver.quit();
 	}
+
+
 }
+
 
 # Login Page Test Automatin Project Dependencies
 
